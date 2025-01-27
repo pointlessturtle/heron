@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.auto;
+package org.firstinspires.ftc.teamcode.opmode.debug.auto;
 
 import android.util.Size;
 
@@ -31,8 +31,8 @@ import org.firstinspires.ftc.teamcode.common.vision.PropPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Autonomous(name = "🔴 Ro2 Red Close Preload Auto")
-public class Ro2RedClosePreloadAuto extends LinearOpMode {
+@Autonomous(name = "🔵 Blue Close Preload Auto")
+public class BlueClosePreloadAuto extends LinearOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
 
@@ -50,11 +50,10 @@ public class Ro2RedClosePreloadAuto extends LinearOpMode {
         CommandScheduler.getInstance().reset();
 
         Globals.IS_AUTO = true;
-        Globals.ALLIANCE = Location.RED;
+        Globals.ALLIANCE = Location.BLUE;
         Globals.SIDE = Location.CLOSE;
 
         telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry(), telemetry);
-
 
         robot.init(hardwareMap);
 
@@ -88,23 +87,23 @@ public class Ro2RedClosePreloadAuto extends LinearOpMode {
 
         Pose yellowScorePos = new Pose();
         Pose purpleScorePos = new Pose();
-        Pose parkPos = new Pose(31, 3, -3 * Math.PI / 2);
+        Pose parkPos = new Pose(-31, 4, 3 * Math.PI / 2);
 
 
         // 0.3, 300
 
         switch (randomization) {
-            case RIGHT:
-                yellowScorePos = new Pose(24, 21.5, -Math.PI / 2);
-                purpleScorePos = new Pose(25, 26, -Math.PI / 2);
+            case LEFT:
+                yellowScorePos = new Pose(-24, 21.5, Math.PI / 2 -0.04);
+                purpleScorePos = new Pose(-25, 26, Math.PI / 2);
                 break;
             case CENTER:
-                yellowScorePos = new Pose(24, 27.75, -Math.PI / 2);
-                purpleScorePos = new Pose(18, 36, -Math.PI / 2);
+                yellowScorePos = new Pose(-24, 27.75, Math.PI / 2-0.04);
+                purpleScorePos = new Pose(-18, 36, Math.PI / 2);
                 break;
-            case LEFT:
-                yellowScorePos = new Pose(24, 37.350, -Math.PI / 2);
-                purpleScorePos = new Pose(4, 25, -Math.PI / 2);
+            case RIGHT:
+                yellowScorePos = new Pose(-24, 34.25, Math.PI / 2-0.04);
+                purpleScorePos = new Pose(-4, 25, Math.PI / 2);
                 break;
             default:
                 break;
@@ -116,24 +115,22 @@ public class Ro2RedClosePreloadAuto extends LinearOpMode {
                 new SequentialCommandGroup(
                         // go to yellow pixel scoring pos
                         new PositionCommand(yellowScorePos)
-                                .alongWith(new WaitCommand(1000).andThen(new YellowPixelExtendCommand())),
+                                .alongWith(new YellowPixelExtendCommand()),
 
                         // score yellow pixel
-                        new EndEffectorCommand(IntakeSubsystem.ClawState.INTERMEDIATE, ClawSide.LEFT),
+                        new EndEffectorCommand(IntakeSubsystem.ClawState.INTERMEDIATE, ClawSide.RIGHT),
                         new WaitCommand(200),
 
                         // retract
                         new YellowPixelRetractCommand(),
 
                         // go to purple pixel scoring pos
-                        new InstantCommand(()->PositionCommand.DEAD_MS=1250),
                         new PositionCommand(purpleScorePos)
                                 .alongWith(new PurplePixelExtendCommand()),
-                        new InstantCommand(()->PositionCommand.DEAD_MS=2500),
 
                         // score purple pixel
-                        new WaitCommand(100),
-                        new EndEffectorCommand(IntakeSubsystem.ClawState.OPEN, ClawSide.RIGHT),
+                        new WaitCommand(500),
+                        new EndEffectorCommand(IntakeSubsystem.ClawState.OPEN, ClawSide.LEFT),
                         new WaitCommand(350),
 
                         new PurplePixelRetractCommand(),

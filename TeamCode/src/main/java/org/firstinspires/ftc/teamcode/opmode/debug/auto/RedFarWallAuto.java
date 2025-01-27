@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.auto;
+package org.firstinspires.ftc.teamcode.opmode.debug.auto;
 
 import static org.firstinspires.ftc.teamcode.common.drive.localizer.FusedLocalizer.calculateDistance;
 

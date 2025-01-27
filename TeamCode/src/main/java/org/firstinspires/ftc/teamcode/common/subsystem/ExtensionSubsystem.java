@@ -18,6 +18,8 @@ public class ExtensionSubsystem extends WSubsystem {
     public IntSupplier liftTicks;
     public DoubleSupplier armAngle;
     private final double ticks_per_meter = 1142.65087348;
+    public static final double inchesToMeters = 0.0254;
+    public static final double max_extension = 40 * inchesToMeters;
 
     public double feedforward = 0.0;
 
